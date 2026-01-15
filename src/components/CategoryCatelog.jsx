@@ -30,7 +30,7 @@ const CategoryCatelog = () => {
               />
             </div>
 
-            <p className="mt-4 text-center text-md font-medium text-title">
+            <p className="mt-4 text-center text-md font-medium text-white -tracking-tighter">
               {cat.name}
             </p>
           </div>

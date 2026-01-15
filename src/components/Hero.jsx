@@ -33,10 +33,10 @@ const Hero = () => {
                 <h2 className="text-3xl font-bold tracking-wide">
                   GAME CONTROLLER
                 </h2>
-                <p className="text-content leading-relaxed tracking-wide">
+                <p className="text-white leading-relaxed tracking-wide">
                   Wireless Noise Cancellation
                 </p>
-                <button className="mt-2 bg-base-100 text-black px-4 py-2 rounded-lg w-max hover:cursor-pointer">
+                <button className="mt-2 bg-base-100 text-content px-4 py-2 rounded-lg w-max hover:cursor-pointer">
                   Shop Now
                 </button>
               </div>
@@ -59,10 +59,10 @@ const Hero = () => {
                 <h2 className="text-3xl font-bold tracking-wide">
                   APPLE VISION
                 </h2>
-                <p className="text-content leading-relaxed tracking-wide">
+                <p className="text-white leading-relaxed tracking-wide">
                   A New Dimension for Entertainment
                 </p>
-                <button className="mt-2 bg-base-100 text-black px-4 py-2 rounded-lg w-max hover:cursor-pointer">
+                <button className="mt-2 bg-base-100 text-content px-4 py-2 rounded-lg w-max hover:cursor-pointer">
                   Shop Now
                 </button>
               </div>
