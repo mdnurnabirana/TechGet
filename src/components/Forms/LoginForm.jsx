@@ -21,7 +21,7 @@ const LoginForm = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-base-100 p-8 rounded-2xl shadow-lg">
+      <div className="max-w-md w-full bg-base-200 p-8 rounded-2xl shadow-lg">
         <h1 className="text-3xl font-bold text-title mb-6 text-center">Login</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -31,7 +31,7 @@ const LoginForm = () => {
             placeholder="Email Address"
             value={form.email}
             onChange={handleChange}
-            className="w-full p-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            className="bg-base-100 w-full p-3 border border-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
             required
           />
 
@@ -42,7 +42,7 @@ const LoginForm = () => {
             value={form.password}
             onChange={handleChange}
             autoComplete="current-password"
-            className="w-full p-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            className="bg-base-100 w-full p-3 border border-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
             required
           />
 
@@ -59,9 +59,9 @@ const LoginForm = () => {
 
         <button
           onClick={googleLogin}
-          className="bg-primary w-full flex items-center justify-center gap-2 border border-base-300 py-3 rounded-lg hover:bg-primary/70 transition duration-300"
+          className="bg-primary text-white font-semibold w-full flex items-center justify-center gap-2 border border-base-300 py-3 rounded-lg hover:bg-primary/70 hover:cursor-pointer transition duration-300"
         >
-          <AiOutlineGoogle className="w-5 h-5 text-content" />
+          <AiOutlineGoogle className="w-5 h-5 text-white" />
           Continue with Google
         </button>
 

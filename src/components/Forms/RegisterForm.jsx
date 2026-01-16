@@ -49,8 +49,8 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="bg-base-200 min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-base-100 p-8 rounded-2xl shadow-lg">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-base-200 p-8 rounded-2xl shadow-lg">
         <h1 className="text-3xl font-bold text-title mb-6 text-center">
           Create Account
         </h1>
@@ -61,7 +61,7 @@ const RegisterForm = () => {
             placeholder="Full Name"
             value={form.name}
             onChange={handleChange}
-            className="w-full p-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            className="bg-base-100 w-full p-3 border border-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
             required
           />
           <input
@@ -70,7 +70,7 @@ const RegisterForm = () => {
             placeholder="Email Address"
             value={form.email}
             onChange={handleChange}
-            className="w-full p-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            className="bg-base-100 w-full p-3 border border-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
             required
           />
           <input
@@ -80,7 +80,7 @@ const RegisterForm = () => {
             value={form.password}
             onChange={handleChange}
             autoComplete="current-password"
-            className="w-full p-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            className="bg-base-100 w-full p-3 border border-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
             required
           />
           <input
@@ -88,7 +88,7 @@ const RegisterForm = () => {
             placeholder="Photo URL (optional)"
             value={form.photoURL}
             onChange={handleChange}
-            className="w-full p-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            className="bg-base-100 w-full p-3 border border-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
           />
           <button
             type="submit"

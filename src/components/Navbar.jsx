@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { FiShoppingCart, FiLogOut, FiUser } from "react-icons/fi";
+import { FiShoppingCart, FiLogOut, FiUser, FiHome } from "react-icons/fi";
 import Logo from "./Logo";
 import NavLink from "./NavLink";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import Image from "next/image";
+import AvatarSkeleton from "./LoadingSkeleton/AvatarSkeleton";
 
 const navItems = [
   { id: 1, menu: "Home", href: "/" },
@@ -24,6 +26,7 @@ const Navbar = () => {
       await logout();
     } finally {
       setIsLoggingOut(false);
+      setProfileOpen(false);
     }
   };
 
@@ -41,6 +44,7 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-5">
+          {/* Cart */}
           <Link href="/cart" className="relative">
             <FiShoppingCart className="text-2xl text-text-heading" />
             <span className="absolute -top-2 -right-2 bg-primary text-text-on-primary text-xs w-5 h-5 rounded-full flex items-center justify-center">
@@ -49,7 +53,9 @@ const Navbar = () => {
           </Link>
 
           {loading && (
-            <div className="px-4 py-2 text-sm text-neutral">Checking session...</div>
+            <div className="px-4 py-2 text-sm text-neutral">
+              <AvatarSkeleton />
+            </div>
           )}
 
           {!loading && !user && (
@@ -73,32 +79,45 @@ const Navbar = () => {
             <div className="relative">
               <button
                 onClick={() => setProfileOpen((p) => !p)}
-                className="flex items-center gap-2 px-3 py-1 border rounded-md bg-base-100"
+                className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary"
               >
-                <FiUser />
-                <span className="hidden sm:inline">{user.name || user.email}</span>
+                <Image
+                  src={user.image || "/assets/avatar_fallback.png"}
+                  alt={user.name || "User"}
+                  height={40}
+                  width={40}
+                  className="w-full h-full object-cover"
+                />
               </button>
 
               {profileOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-base-100 rounded-lg shadow-lg border border-base-200 overflow-hidden z-50">
-                  <Link
-                    href="/profile"
-                    onClick={() => setProfileOpen(false)}
-                    className="block px-4 py-2 hover:bg-base-200"
-                  >
-                    <div className="flex items-center gap-2">
-                      <FiUser /> <span>My Profile</span>
-                    </div>
-                  </Link>
+                <div className="text-neutral absolute right-0 mt-3 w-72 bg-base-100 rounded-2xl shadow-xl border border-base-200 overflow-hidden z-50 animate-fadeIn">
+                  <div className="p-5 border-b border-base-200">
+                    <p className="font-bold text-lg truncate">{user.name}</p>
+                    <p className="text-sm text-neutral truncate">
+                      {user.email}
+                    </p>
+                  </div>
 
-                  <button
-                    onClick={handleLogout}
-                    disabled={isLoggingOut}
-                    className="w-full text-left px-4 py-2 hover:bg-base-200 flex items-center gap-2"
-                  >
-                    <FiLogOut />
-                    <span>{isLoggingOut ? "Logging out..." : "Logout"}</span>
-                  </button>
+                  <div className="py-3">
+                    <Link
+                      href="/"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center gap-4 px-5 py-3 hover:bg-base-200 transition"
+                    >
+                      <FiHome className="text-xl" />
+                      <span>Home</span>
+                    </Link>
+
+                    <button
+                      onClick={handleLogout}
+                      disabled={isLoggingOut}
+                      className="bg-secondary flex items-center gap-4 w-full px-5 py-3 text-white hover:bg-secondary/80 transition disabled:opacity-70"
+                    >
+                      <FiLogOut className="text-xl" />
+                      <span>{isLoggingOut ? "Logging out..." : "Logout"}</span>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
