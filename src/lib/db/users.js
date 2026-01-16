@@ -8,22 +8,37 @@ export async function usersCollection() {
   return db.collection("users");
 }
 
-export async function createUser({ name, email, password, photoURL = null, provider = "email" }) {
+export async function createUser({
+  name,
+  email,
+  password = null,
+  photoURL = null,
+  provider = "email",
+}) {
   const users = await usersCollection();
   const now = new Date();
 
-  const result = await users.insertOne({
-    name,
-    email,
-    password,
-    photoURL,
-    provider,
-    role: "user",
-    created_at: now,
-    updated_at: now,
-  });
+  // Use upsert to avoid duplicate users when provider sign-ins occur multiple times.
+  // $setOnInsert ensures fields are set only when inserting.
+  await users.updateOne(
+    { email },
+    {
+      $setOnInsert: {
+        name,
+        email,
+        password,
+        photoURL,
+        provider,
+        role: "user",
+        created_at: now,
+      },
+      $set: { updated_at: now },
+    },
+    { upsert: true }
+  );
 
-  return result;
+  // Return the user document (either existing or newly created)
+  return users.findOne({ email });
 }
 
 export async function getUserByEmail(email) {

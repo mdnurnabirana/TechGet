@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { FiShoppingCart } from "react-icons/fi";
+import { FiShoppingCart, FiLogOut, FiUser } from "react-icons/fi";
 import Logo from "./Logo";
 import NavLink from "./NavLink";
+import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 const navItems = [
   { id: 1, menu: "Home", href: "/" },
@@ -11,7 +13,19 @@ const navItems = [
 ];
 
 const Navbar = () => {
-  const cartCount = 3; 
+  const cartCount = 3;
+  const { user, logout, loading } = useAuth();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <header className="bg-base-300 border-b border-base-200 py-2">
@@ -34,12 +48,61 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <Link
-            href="/login"
-            className="bg-primary text-text-on-primary px-5 py-2 rounded-lg font-medium hover:bg-primary/80 transition"
-          >
-            Login
-          </Link>
+          {loading && (
+            <div className="px-4 py-2 text-sm text-neutral">Checking session...</div>
+          )}
+
+          {!loading && !user && (
+            <div className="flex items-center gap-3">
+              <Link
+                href="/login"
+                className="bg-primary text-text-on-primary px-4 py-2 rounded-lg font-medium hover:bg-primary/80 transition"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="bg-secondary text-white px-4 py-2 rounded-lg font-medium hover:bg-secondary/80 transition"
+              >
+                Register
+              </Link>
+            </div>
+          )}
+
+          {!loading && user && (
+            <div className="relative">
+              <button
+                onClick={() => setProfileOpen((p) => !p)}
+                className="flex items-center gap-2 px-3 py-1 border rounded-md bg-base-100"
+              >
+                <FiUser />
+                <span className="hidden sm:inline">{user.name || user.email}</span>
+              </button>
+
+              {profileOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-base-100 rounded-lg shadow-lg border border-base-200 overflow-hidden z-50">
+                  <Link
+                    href="/profile"
+                    onClick={() => setProfileOpen(false)}
+                    className="block px-4 py-2 hover:bg-base-200"
+                  >
+                    <div className="flex items-center gap-2">
+                      <FiUser /> <span>My Profile</span>
+                    </div>
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="w-full text-left px-4 py-2 hover:bg-base-200 flex items-center gap-2"
+                  >
+                    <FiLogOut />
+                    <span>{isLoggingOut ? "Logging out..." : "Logout"}</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>

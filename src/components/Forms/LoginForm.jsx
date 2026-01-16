@@ -1,51 +1,80 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { AiOutlineGoogle } from "react-icons/ai";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter();
+  const { login, googleLogin, loading } = useAuth();
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-
-    await signIn("credentials", {
-      email,
-      password,
-      callbackUrl: "/",
-    });
+    const success = await login(form);
+    if (success) router.replace("/");
   };
 
   return (
-    <div className="w-96 p-6 rounded-xl bg-base-100 shadow">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-base-100 p-8 rounded-2xl shadow-lg">
+        <h1 className="text-3xl font-bold text-title mb-6 text-center">Login</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          className="input input-bordered w-full"
-          required
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          className="input input-bordered w-full"
-          required
-        />
-        <button className="btn btn-primary w-full">Login</button>
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            name="email"
+            type="email"
+            placeholder="Email Address"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full p-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            required
+          />
 
-      <div className="divider">OR</div>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            autoComplete="current-password"
+            className="w-full p-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            required
+          />
 
-      <button
-        onClick={() => signIn("google", { callbackUrl: "/" })}
-        className="btn btn-outline w-full"
-      >
-        Continue with Google
-      </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-orange-500 transition duration-300 disabled:opacity-50"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+
+        <div className="divider my-6">- OR -</div>
+
+        <button
+          onClick={googleLogin}
+          className="bg-primary w-full flex items-center justify-center gap-2 border border-base-300 py-3 rounded-lg hover:bg-primary/70 transition duration-300"
+        >
+          <AiOutlineGoogle className="w-5 h-5 text-content" />
+          Continue with Google
+        </button>
+
+        <p className="text-content text-sm mt-4 text-center">
+          Don't have an account?{' '}
+          <span
+            onClick={() => router.push("/register")}
+            className="text-primary cursor-pointer font-medium"
+          >
+            Register
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

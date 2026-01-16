@@ -50,7 +50,6 @@ const RegisterForm = () => {
 
   return (
     <div className="bg-base-200 min-h-screen flex items-center justify-center p-4">
-      <Toaster position="top-right" reverseOrder={false} />
       <div className="max-w-md w-full bg-base-100 p-8 rounded-2xl shadow-lg">
         <h1 className="text-3xl font-bold text-title mb-6 text-center">
           Create Account

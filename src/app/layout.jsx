@@ -2,6 +2,8 @@ import { baiJamjuree } from "@/lib/fonts";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "@/context/AuthContext";
+import Providers from "@/components/Providers";
 
 export const metadata = {
   title: "TechGet Ultra",
@@ -16,12 +18,16 @@ export default function RootLayout({ children }) {
           fontFamily: "var(--font-bai-jamjuree), sans-serif",
         }}
       >
-        <header>
-          <Navbar />
-        </header>
-        <main className="min-h-screen">{children}</main>
-        <footer>Footer</footer>
-        <Toaster />
+        <Providers>
+          <AuthProvider>
+            <header>
+              <Navbar />
+            </header>
+            <main className="min-h-screen">{children}</main>
+            <footer>Footer</footer>
+            <Toaster />
+          </AuthProvider>
+        </Providers>
       </body>
     </html>
   );
