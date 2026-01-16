@@ -59,7 +59,7 @@ const LoginForm = () => {
 
         <button
           onClick={googleLogin}
-          className="bg-primary text-white font-semibold w-full flex items-center justify-center gap-2 border border-base-300 py-3 rounded-lg hover:bg-primary/70 hover:cursor-pointer transition duration-300"
+          className="bg-primary text-white font-semiboldL w-full flex items-center justify-center gap-2 border border-base-300 py-3 rounded-lg hover:bg-primary/70 hover:cursor-pointer transition duration-300"
         >
           <AiOutlineGoogle className="w-5 h-5 text-white" />
           Continue with Google

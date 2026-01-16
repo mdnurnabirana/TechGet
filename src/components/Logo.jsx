@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Logo = () => {
   return (
-    <div className="flex items-center">
+    <Link href={"/"} className="flex items-center">
         <Image
         src="/assets/logo.png"
         alt="TechGet Ultra Logo"
@@ -13,7 +14,7 @@ const Logo = () => {
         <h1 className="text-primary">TechGet</h1>
         <h1 className="text-secondary">Ultra</h1>
       </div>
-    </div>
+    </Link>
   );
 };
 

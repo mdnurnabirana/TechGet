@@ -18,8 +18,6 @@ export async function createUser({
   const users = await usersCollection();
   const now = new Date();
 
-  // Use upsert to avoid duplicate users when provider sign-ins occur multiple times.
-  // $setOnInsert ensures fields are set only when inserting.
   await users.updateOne(
     { email },
     {
@@ -37,11 +35,22 @@ export async function createUser({
     { upsert: true }
   );
 
-  // Return the user document (either existing or newly created)
   return users.findOne({ email });
 }
 
 export async function getUserByEmail(email) {
   const users = await usersCollection();
   return users.findOne({ email });
+}
+
+export async function getUserRole(email) {
+  if (!email) return null;
+
+  const users = await usersCollection();
+  const user = await users.findOne(
+    { email },
+    { projection: { role: 1 } }
+  );
+
+  return user?.role || "user";
 }

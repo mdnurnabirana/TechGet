@@ -1,22 +1,76 @@
 "use client";
 
 import Link from "next/link";
-import { FiShoppingCart, FiLogOut, FiUser, FiHome } from "react-icons/fi";
+import {
+  FiShoppingCart,
+  FiLogOut,
+  FiUser,
+  FiHome,
+  FiShoppingBag,
+  FiPlusSquare,
+  FiList,
+} from "react-icons/fi";
 import Logo from "./Logo";
 import NavLink from "./NavLink";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import AvatarSkeleton from "./LoadingSkeleton/AvatarSkeleton";
+import useUserRole from "@/hooks/useUserRole";
 
 const navItems = [
   { id: 1, menu: "Home", href: "/" },
   { id: 2, menu: "Products", href: "/products" },
 ];
 
+export const roleBasedNav = {
+  user: [
+    {
+      id: 1,
+      label: "My Profile",
+      href: "/profile",
+      icon: FiUser,
+    },
+    {
+      id: 2,
+      label: "My Orders",
+      href: "/orders",
+      icon: FiShoppingBag,
+    },
+    {
+      id: 3,
+      label: "My Cart",
+      href: "/cart",
+      icon: FiShoppingCart,
+    },
+  ],
+
+  admin: [
+    {
+      id: 1,
+      label: "Add Product",
+      href: "/admin/add-product",
+      icon: FiPlusSquare,
+    },
+    {
+      id: 2,
+      label: "All Products",
+      href: "/admin/products",
+      icon: FiList,
+    },
+    {
+      id: 3,
+      label: "Sold Items",
+      href: "/admin/sales",
+      icon: FiShoppingBag,
+    },
+  ],
+};
+
 const Navbar = () => {
   const cartCount = 3;
   const { user, logout, loading } = useAuth();
+  const { role, loading: roleLoading } = useUserRole();
   const [profileOpen, setProfileOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -44,7 +98,6 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-5">
-          {/* Cart */}
           <Link href="/cart" className="relative">
             <FiShoppingCart className="text-2xl text-text-heading" />
             <span className="absolute -top-2 -right-2 bg-primary text-text-on-primary text-xs w-5 h-5 rounded-full flex items-center justify-center">
@@ -100,14 +153,21 @@ const Navbar = () => {
                   </div>
 
                   <div className="py-3">
-                    <Link
-                      href="/"
-                      onClick={() => setProfileOpen(false)}
-                      className="flex items-center gap-4 px-5 py-3 hover:bg-base-200 transition"
-                    >
-                      <FiHome className="text-xl" />
-                      <span>Home</span>
-                    </Link>
+                    {roleBasedNav[role || "user"]?.map((item) => {
+                      const Icon = item.icon;
+
+                      return (
+                        <Link
+                          key={item.id}
+                          href={item.href}
+                          onClick={() => setProfileOpen(false)}
+                          className="flex items-center gap-4 px-5 py-3 hover:bg-base-200 transition"
+                        >
+                          <Icon className="text-xl" />
+                          <span>{item.label}</span>
+                        </Link>
+                      );
+                    })}
 
                     <button
                       onClick={handleLogout}
