@@ -8,10 +8,23 @@ import { useRouter } from "next/navigation";
 const LoginForm = () => {
   const router = useRouter();
   const { login, googleLogin, loading } = useAuth();
-  const [form, setForm] = useState({ email: "", password: "" });
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
+
+  const fillDemo = (type) => {
+    if (type === "admin") {
+      setForm({ email: "adminone@gmail.com", password: "123456" });
+    }
+    if (type === "user") {
+      setForm({ email: "userone@gmail.com", password: "123456" });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +35,27 @@ const LoginForm = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-base-200 p-8 rounded-2xl shadow-lg">
-        <h1 className="text-3xl font-bold text-title mb-6 text-center">Login</h1>
+        <h1 className="text-3xl font-bold text-title mb-6 text-center">
+          Login
+        </h1>
+
+        <div className="flex gap-3 mb-4">
+          <button
+            type="button"
+            onClick={() => fillDemo("admin")}
+            className="flex-1 border border-primary text-primary py-2 rounded-lg font-medium hover:bg-primary hover:text-white transition"
+          >
+            Demo Admin
+          </button>
+
+          <button
+            type="button"
+            onClick={() => fillDemo("user")}
+            className="flex-1 border border-primary text-primary py-2 rounded-lg font-medium hover:bg-primary hover:text-white transition"
+          >
+            Demo User
+          </button>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -59,14 +92,14 @@ const LoginForm = () => {
 
         <button
           onClick={googleLogin}
-          className="bg-primary text-white font-semiboldL w-full flex items-center justify-center gap-2 border border-base-300 py-3 rounded-lg hover:bg-primary/70 hover:cursor-pointer transition duration-300"
+          className="bg-primary text-white font-semibold w-full flex items-center justify-center gap-2 border border-base-300 py-3 rounded-lg hover:bg-primary/70 transition duration-300"
         >
           <AiOutlineGoogle className="w-5 h-5 text-white" />
           Continue with Google
         </button>
 
         <p className="text-content text-sm mt-4 text-center">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{" "}
           <span
             onClick={() => router.push("/register")}
             className="text-primary cursor-pointer font-medium"
