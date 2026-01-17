@@ -37,12 +37,6 @@ export const roleBasedNav = {
       href: "/orders",
       icon: FiShoppingBag,
     },
-    {
-      id: 3,
-      label: "My Cart",
-      href: "/cart",
-      icon: FiShoppingCart,
-    },
   ],
 
   admin: [
@@ -57,18 +51,6 @@ export const roleBasedNav = {
       label: "Add Product",
       href: "/admin/add-product",
       icon: FiPlusSquare,
-    },
-    {
-      id: 3,
-      label: "All Products",
-      href: "/admin/products",
-      icon: FiList,
-    },
-    {
-      id: 4,
-      label: "Sold Items",
-      href: "/admin/sales",
-      icon: FiShoppingBag,
     },
   ],
 };

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { createProduct } from "@/lib/db/products";
+import { createProduct, getAllProducts } from "@/lib/db/products";
 
 export async function POST(req) {
   try {
@@ -23,5 +23,16 @@ export async function POST(req) {
   } catch (err) {
     console.error("/api/products error:", err);
     return NextResponse.json({ message: "Failed to create product" }, { status: 500 });
+  }
+}
+
+export async function GET() {
+  try {
+    const products = await getAllProducts();
+    const items = (products || []).map((p) => ({ ...p, _id: p._id.toString() }));
+    return NextResponse.json({ products: items });
+  } catch (err) {
+    console.error("/api/products GET error:", err);
+    return NextResponse.json({ message: "Failed to fetch products" }, { status: 500 });
   }
 }

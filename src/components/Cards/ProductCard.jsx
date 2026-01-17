@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import toast from "react-hot-toast";
 
 const CartIcon = ({ className = "w-4 h-4 mr-2" }) => (
@@ -25,20 +26,30 @@ const ProductCard = ({ product = {}, onBuy }) => {
         setLoading(true);
         try {
             if (onBuy) {
+                // let parent handle toasts and errors; update stock only on success
                 await onBuy(product);
+                setStock((s) => Math.max(0, s - 1));
             } else {
-                await fetch("/api/purchases", {
+                const res = await fetch("/api/purchases", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ productId: product._id, price: product.price, quantity: 1 }),
                 });
-            }
 
-            setStock((s) => Math.max(0, s - 1));
-            toast.success("Purchase successful");
+                if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    throw new Error(data.message || "Failed to purchase");
+                }
+
+                setStock((s) => Math.max(0, s - 1));
+                toast.success("Purchase successful");
+            }
         } catch (err) {
             console.error("buy error", err);
-            toast.error("Purchase failed");
+            // If parent provided onBuy it already shows error toast; avoid duplicate toasts
+            if (!onBuy) {
+                toast.error(err.message || "Purchase failed");
+            }
         } finally {
             setLoading(false);
         }
@@ -46,8 +57,10 @@ const ProductCard = ({ product = {}, onBuy }) => {
 
     return (
         <div className="rounded-2xl overflow-hidden shadow bg-base-100">
-            <div className="w-full h-56 bg-gray-100">
-                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+            <div className="w-full h-56 bg-gray-100 relative overflow-hidden">
+                {product.image ? (
+                    <Image src={product.image} alt={product.name} fill className="object-cover" unoptimized />
+                ) : null}
             </div>
 
             <div className="p-4">
@@ -59,8 +72,8 @@ const ProductCard = ({ product = {}, onBuy }) => {
                 <h3 className="text-md font-semibold text-title leading-tight">{product.name}</h3>
 
                 <div className="mt-4 flex items-center justify-between">
-                    <Link href={`/products/${product._id}`} className="text-sm text-primary font-medium">
-                        View detail
+                    <Link href={`/products/${product._id}`} className="btn btn-ghost btn-sm text-primary">
+                        View details
                     </Link>
 
                     <button
