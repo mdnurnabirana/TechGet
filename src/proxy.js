@@ -19,13 +19,19 @@ export async function proxy(request) {
     return NextResponse.redirect(url);
   };
 
+  const redirectToHome = () => {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  };
+
   if (pathname.startsWith("/admin")) {
     if (!isAuthenticated) {
       return redirectToLogin("unauthenticated");
     }
 
     if (role !== "admin") {
-      return redirectToLogin("permission");
+      return redirectToHome();
     }
   }
 

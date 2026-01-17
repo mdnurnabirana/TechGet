@@ -13,7 +13,6 @@ const LoginPage = () => {
   useEffect(() => {
     if (status === "loading") return;
     if (session) {
-      toast("You are already logged in!");
       router.push("/");
     }
   }, [session, status, router]);

@@ -46,20 +46,26 @@ export const roleBasedNav = {
   ],
 
   admin: [
+    // {
+    //   id: 1,
+    //   label: "My Profile",
+    //   href: "/profile",
+    //   icon: FiUser,
+    // },
     {
-      id: 1,
+      id: 2,
       label: "Add Product",
       href: "/admin/add-product",
       icon: FiPlusSquare,
     },
     {
-      id: 2,
+      id: 3,
       label: "All Products",
       href: "/admin/products",
       icon: FiList,
     },
     {
-      id: 3,
+      id: 4,
       label: "Sold Items",
       href: "/admin/sales",
       icon: FiShoppingBag,
