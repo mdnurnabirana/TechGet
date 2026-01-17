@@ -47,10 +47,26 @@ export async function getUserRole(email) {
   if (!email) return null;
 
   const users = await usersCollection();
-  const user = await users.findOne(
-    { email },
-    { projection: { role: 1 } }
-  );
+  const user = await users.findOne({ email }, { projection: { role: 1 } });
 
   return user?.role || "user";
+}
+
+export async function updateProfile({ email, name, photoURL }) {
+  if (!email) throw new Error("Email is required");
+
+  const users = await usersCollection();
+
+  await users.updateOne(
+    { email },
+    {
+      $set: {
+        name,
+        photoURL,
+        updated_at: new Date(),
+      },
+    }
+  );
+
+  return users.findOne({ email });
 }

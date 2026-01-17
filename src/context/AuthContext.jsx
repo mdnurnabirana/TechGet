@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -11,9 +11,14 @@ export const AuthProvider = ({ children }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
+  const [currentUser, setCurrentUser] = useState(session?.user || null);
+
+  useEffect(() => {
+    setCurrentUser(session?.user || null);
+  }, [session]);
+
   const loading = status === "loading";
 
-  // ✅ Email / Password login
   const login = async ({ email, password }) => {
     const res = await signIn("credentials", {
       redirect: false,
@@ -31,28 +36,31 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
-  // ✅ Google OAuth login (popup handled by NextAuth)
   const googleLogin = async () => {
     await signIn("google", {
       callbackUrl: "/",
     });
   };
 
-  // ✅ Logout (toast first, then redirect)
   const logout = async () => {
     toast.success("Logged out");
     await signOut({ redirect: false });
     router.replace("/login");
   };
 
+  const updateUser = (updates) => {
+    setCurrentUser((prev) => (prev ? { ...prev, ...updates } : prev));
+  };
+
   return (
     <AuthContext.Provider
       value={{
-        user: session?.user || null,
+        user: currentUser,
         login,
         googleLogin,
         logout,
         loading,
+        updateUser,
       }}
     >
       {children}

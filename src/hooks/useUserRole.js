@@ -9,7 +9,7 @@ const useUserRole = () => {
   useEffect(() => {
     const fetchRole = async () => {
       try {
-        const res = await fetch("/api/users/role");
+        const res = await fetch("http://localhost:3000/api/users/role");
         const data = await res.json();
         setRole(data.role || "user");
       } catch {
