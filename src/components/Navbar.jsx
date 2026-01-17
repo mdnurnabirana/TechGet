@@ -71,6 +71,7 @@ const Navbar = () => {
   const cartCount = 3;
   const { user, logout, loading } = useAuth();
   const { role, loading: roleLoading } = useUserRole();
+  console.log("role is: ", role);
   const [profileOpen, setProfileOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 

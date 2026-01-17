@@ -53,11 +53,34 @@ export const authOptions = {
       return true;
     },
     async jwt({ token, user }) {
-      if (user) token.sub = user.id || user.email;
+      // On initial sign in, attach email and role to token.
+      if (user) {
+        // prefer email as stable identifier
+        token.sub = user.email;
+        token.email = user.email;
+        if (user.role) {
+          token.role = user.role;
+        } else {
+          // try to load role from DB for providers like Google
+          const dbUser = await getUserByEmail(user.email);
+          if (dbUser) token.role = dbUser.role;
+        }
+      } else if (!token.role && token.sub) {
+        // subsequent requests: ensure token has role
+        const dbUser = await getUserByEmail(token.sub);
+        if (dbUser) {
+          token.role = dbUser.role;
+          token.email = dbUser.email || token.sub;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
+      // expose id (email) and role to the client session
       session.user.id = token.sub;
+      session.user.email = token.email || token.sub || session.user.email;
+      session.user.role = token.role || null;
       return session;
     },
   },

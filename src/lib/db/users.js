@@ -1,4 +1,5 @@
 import connectDB from "./dbConnect.js";
+import { ObjectId } from "mongodb";
 
 export const DB_NAME = "techgetUltra";
 
@@ -38,9 +39,20 @@ export async function createUser({
   return users.findOne({ email });
 }
 
-export async function getUserByEmail(email) {
+export async function getUserByEmail(identifier) {
   const users = await usersCollection();
-  return users.findOne({ email });
+
+  if (!identifier) return null;
+
+  if (typeof identifier === "string" && /^[0-9a-fA-F]{24}$/.test(identifier)) {
+    try {
+      return users.findOne({ _id: new ObjectId(identifier) });
+    } catch (err) {
+      
+    }
+  }
+
+  return users.findOne({ email: identifier });
 }
 
 export async function getUserRole(email) {
