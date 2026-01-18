@@ -29,7 +29,7 @@ const ProfileForm = ({ user }) => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/api/users/profile", {
+      const res = await fetch("/api/users/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
