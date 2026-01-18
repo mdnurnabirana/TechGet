@@ -26,7 +26,6 @@ const ProductCard = ({ product = {}, onBuy }) => {
         setLoading(true);
         try {
             if (onBuy) {
-                // let parent handle toasts and errors; update stock only on success
                 await onBuy(product);
                 setStock((s) => Math.max(0, s - 1));
             } else {
@@ -69,10 +68,10 @@ const ProductCard = ({ product = {}, onBuy }) => {
                     <span className="text-xs text-content">Stock: {stock}</span>
                 </div>
 
-                <h3 className="text-md font-semibold text-title leading-tight">{product.name}</h3>
+                <h3 className="text-md font-semibold text-title leading-tight line-clamp-1">{product.name}</h3>
 
                 <div className="mt-4 flex items-center justify-between">
-                    <Link href={`/products/${product._id}`} className="btn btn-ghost btn-sm text-primary">
+                    <Link href={`/products/${product._id}`} className="btn btn-ghost btn-sm bg-primary rounded-lg py-2 px-3 text-white">
                         View details
                     </Link>
 
