@@ -56,7 +56,7 @@ export const roleBasedNav = {
 };
 
 const Navbar = () => {
-  const cartCount = 3;
+  // const cartCount = 3;
   const { user, logout, loading } = useAuth();
   const { role, loading: roleLoading } = useUserRole();
   console.log("role is: ", role);
@@ -87,13 +87,6 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-5">
-          <Link href="/cart" className="relative">
-            <FiShoppingCart className="text-2xl text-text-heading" />
-            <span className="absolute -top-2 -right-2 bg-primary text-text-on-primary text-xs w-5 h-5 rounded-full flex items-center justify-center">
-              {cartCount}
-            </span>
-          </Link>
-
           {loading && (
             <div className="px-4 py-2 text-sm text-neutral">
               <AvatarSkeleton />
