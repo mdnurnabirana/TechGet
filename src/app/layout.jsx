@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/context/AuthContext";
 import Providers from "@/components/Providers";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "TechGet Ultra",
@@ -24,7 +25,7 @@ export default function RootLayout({ children }) {
               <Navbar />
             </header>
             <main className="min-h-screen">{children}</main>
-            <footer>Footer</footer>
+            <footer><Footer /></footer>
             <Toaster />
           </AuthProvider>
         </Providers>
